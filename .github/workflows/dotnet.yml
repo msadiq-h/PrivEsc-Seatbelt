@@ -26,8 +26,8 @@ jobs:
     - name: Create Git Tag
       id: tag
       run: |
-        TAG_NAME=$(date +%Y%m%d%H%M%S)
-        echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
+        $TAG_NAME = (Get-Date).ToString('yyyyMMddHHmmss')
+        echo "TAG_NAME=$TAG_NAME" >> $env:GITHUB_ENV
         
     - name: MSBuild
       run: |
