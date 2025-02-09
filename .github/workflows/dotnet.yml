@@ -22,7 +22,16 @@ jobs:
 
     - name: Git Fetch Tags
       run: git fetch --prune --unshallow --tags -f
-     
+    - name: Determine Next Tag
+      id: tag
+      run: |
+        latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+        if [ -z "$latest_tag" ]; then
+          next_tag=1
+        else
+          next_tag=$((latest_tag + 1))
+        fi
+        echo "next_tag=$next_tag" >> $GITHUB_ENV
     - name: MSBuild
       run: |
         msbuild.exe Seatbelt.sln /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=compiled/
@@ -32,4 +41,4 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: Seatbelt/compiled/*
-        tag_name: date
+        tag_name: ${{ env.next_tag }}
