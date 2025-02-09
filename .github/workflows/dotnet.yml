@@ -26,5 +26,5 @@ jobs:
     - name: MSBuild
       run: |
         msbuild.exe Seatbelt.sln /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=compiled/
-        dir Seatbelt
+        dir Seatbelt/Output
         Copy-Item -Path Seatbelt\compiled\Seatbelt.exe -Destination compiled\Seatbelt.exe
