@@ -8,25 +8,19 @@ on:
     branches:
       - main
   workflow_dispatch:
-
 jobs:
   build:
-    runs-on: windows-latest
-
+    runs-on: windows-2019
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: checkout
+        uses: actions/checkout@v1
+      - name: Restore NuGet packages
+        run: nuget restore
+      - name: Build DotNET35
+        run: |
+           cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
+           .\MSBuild.exe $Env:GITHUB_WORKSPACE\Seatbelt.sln /p:Configuration=Release
 
-    - name: Setup .NET Framework 3.5
-      run: |
-        echo Installing .NET Framework 3.5
-        dism /online /enable-feature /featurename:NetFx3 /all
-
-    - name: Restore NuGet packages
-      run: nuget restore
-
-    - name: Build
-      run: msbuild /p:Configuration=Release
 
     - name: Test
       run: |
