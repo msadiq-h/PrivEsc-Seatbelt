@@ -22,15 +22,7 @@ jobs:
 
     - name: Git Fetch Tags
       run: git fetch --prune --unshallow --tags -f
-
-    - name: Create Git Tag
-      id: tag
-      run: |
-        TAG_NAME=$(date +%Y%m%d%H%M%S)
-        git tag $TAG_NAME
-        git push origin $TAG_NAME
-        echo "::set-output name=TAG::$TAG_NAME"
-      
+     
     - name: MSBuild
       run: |
         msbuild.exe Seatbelt.sln /p:Configuration=Release /p:Platform="Any CPU" /p:OutputPath=compiled/
@@ -40,4 +32,4 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         files: Seatbelt/compiled/*
-        tag_name: ${{ steps.tag.outputs.TAG }}
+        tag_name: date
